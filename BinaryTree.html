@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+  <script>
+
+      function Tree(rN) {
+          var rootNode;
+          var leftNode;
+          var rightNode;
+
+          this.rootNode = rN;
+      };
+
+
+      Tree.prototype.addNode=
+          function(nodeAdd){ //Determine whether value is left node or right node
+              if (nodeAdd <= this.rootNode) {
+                  this.LeftNodeAdd(nodeAdd); //Add Left Node
+              }else{
+                  this.RightNodeAdd(nodeAdd); //Add Right Node
+              }
+
+          }
+
+      Tree.prototype.LeftNodeAdd=
+          function(nodeAdd){
+
+              //AddLeftNode
+
+              if (this.leftNode == null) { //If left node is empty then assign value
+                  this.leftNode = nodeAdd;
+              }else{  //If left node is tree then traverse that tree
+                  if (typeof this.leftNode == 'object') { //There are more nodes so we need to traverse to bottom of tree
+                      SubTree = new Tree();
+                      SubTree = this.leftNode;
+                      SubTree.addNode(nodeAdd); //Recursive call to add node
+                  }else { //If left node is not tree then create new tree and assign values
+                      if (this.leftNode <= nodeAdd) {
+                          // /If exisiting left node is less then inserted value then create new tree with new value
+                          SubTree = new Tree(nodeAdd);
+                          SubTree.leftNode = this.leftNode;
+                          this.leftNode = SubTree;
+                      } else {
+                          //If existing left node is greater than inserted value then left node will be root of new table
+                          SubTree = new Tree(this.leftNode); //Create tree with left node as root
+                          SubTree.leftNode = nodeAdd; // Set SubTree left node to inserted value
+                          this.leftNode = SubTree;
+                      }
+                  }
+
+              }
+
+        }
+
+
+      Tree.prototype.RightNodeAdd=
+          function(nodeAdd){
+
+              //Add right node
+              if (this.rightNode == null) { //If right node is empty then assign value
+                  this.rightNode = nodeAdd;
+              }else{  //If right node is tree then traverse that tree
+                  if (typeof this.rightNode == 'object') { //There are more nodes so we need to traverse to bottom of tree
+                      SubTree = new Tree();
+                      SubTree = this.rightNode;
+                      SubTree.addNode(nodeAdd); //Recursive call to add node
+                  } else { //If right node is not tree then create new tree and assign values
+                      if (this.rightNode <= nodeAdd) {
+                          // /If exisiting right node is less then inserted value then create new tree with new value
+                          var SubTree = new Tree(nodeAdd);
+                          SubTree.leftNode = this.rightNode;
+                          this.rightNode = SubTree;
+                      } else {
+                          //If existing right node is greater than inserted value then right node will be root of new table
+                          SubTree = new Tree(this.rightNode); //Create tree with right node as root
+                          SubTree.leftNode = nodeAdd; // Set SubTree right node to inserted value
+                          this.rightNode = SubTree;
+                      }
+                  }
+
+              }
+          }
+
+      Tree.prototype.printTree=
+          function() {
+              //document.writeln('Global Root' + this.rootNode + '<br>');
+
+              if (typeof this.leftNode == 'object') { //If branch is a tree then create new object and print tree
+                  SubTree = new Tree();
+                  SubTree=this.leftNode;
+                  document.writeln('SubTree Root' + SubTree.rootNode+'<br>'); //Print subtree node
+              }else if (this.leftNode !=null) {
+                  document.writeln(this.leftNode + '<br>');
+              }
+
+              if (typeof this.rightNode == 'object') { //If branch is a tree then create new object and print tree
+                  SubTree2 = new Tree();
+                  SubTree2=this.rightNode;
+                  document.writeln('SubTree2 Root' + SubTree2.rootNode+'<br>'); //Print subtree node
+
+              }else if (this.rightNode !=null) {
+                  document.writeln(this.rightNode + '<br>');
+              }
+
+              //Recursive call is last so that tree is traversed correctly when printing
+              if(typeof this.leftNode == 'object') {
+                  SubTree.printTree(); //Recursive call to print sub nodes
+              }
+
+              if(typeof this.rightNode == 'object') {
+                  SubTree2.printTree(); //Recursive call to print sub nodes
+              }
+          }
+
+      BinaryTree = new Tree(20);
+      BinaryTree.addNode(10);
+      BinaryTree.addNode(30);
+      BinaryTree.addNode(2);
+      BinaryTree.addNode(5);
+      BinaryTree.addNode(6);
+      BinaryTree.addNode(31);
+      BinaryTree.addNode(40);
+      BinaryTree.printTree();
+
+  </script>
+</body>
+</html>

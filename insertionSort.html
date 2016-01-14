@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<script>
+
+    var baseNumbers=[2,6,6,9,7,8,1,0];
+    // var baseNumbers=[1,2,3,4,5,6,7,0];
+    // var baseNumbers=[1,2,3,4,5,6,7,0];
+    //var baseNumbers=[1,2,3,4,8,6,7];
+
+    var Numbers=[];
+    var mergeCounter=0;
+    Numbers=baseNumbers;
+
+/*
+
+    Numbers=insertionSort(Numbers);
+    printNumbers(Numbers);
+
+    Numbers=baseNumbers;
+    Numbers=bubbleSort(Numbers);
+    printNumbers(Numbers);
+*/
+     Numbers=baseNumbers;
+    console.log('Check Number');
+    printNumbers(Numbers);
+
+     Numbers=mergeSort(Numbers);
+
+     console.log('Merge Sorted in ' + mergeCounter + ' steps');
+     printNumbers(Numbers);
+
+
+    function printNumbers(Numbers){
+        for(var i=0;i<Numbers.length;i++){ //Print list to console
+            console.log(Numbers[i]);
+        }
+
+    }
+
+    function insertionSort(numberList){
+        var newList=[]; //Create new list to add sorted elements to
+        var counter=0; //Count the number of steps
+
+        newList[0]=numberList[0];
+
+        for(var i=1;i<numberList.length;i++){ //start at 1 as first element does not need comparing to itself
+            var j=i;
+            var temp;
+
+            newList[i]=numberList[i];
+
+            while(j>0 && newList[j]<newList[j-1]){
+                temp=newList[j]; //Store current value in temp array
+
+                //Swap numbers;
+                newList[j]=newList[j-1];
+                newList[j-1]=temp;
+
+                j--; //Decrement counter
+
+                counter++;
+            }
+
+        }
+
+        console.log('Insertion sorted in ' + counter + ' steps');
+        return newList;
+    }
+
+    function bubbleSort(numberList) {
+        var counter = 0;
+        var temp;
+        swap = 'true';
+
+        while (swap == 'true') {
+            swap = 'false'; //Reset flag;
+
+            for (var i = 0; i < numberList.length - 1; i++) {
+                counter++;
+
+                if (numberList[i + 1] < numberList[i]) {//Swap elements
+                    temp = numberList[i];
+
+                    numberList[i] = numberList[i + 1];
+                    numberList[i + 1] = temp;
+
+                    swap = 'true';
+                }
+            }
+
+        }
+            console.log('Bubble Sorted in ' + counter + ' steps');
+            return numberList;
+    }
+
+
+        function mergeSort(numberList) {
+
+            var midPoint;
+            var leftSide = [];
+            var rightSide = [];
+            var tempVal;
+
+            midPoint = parseInt(numberList.length / 2);
+            mergeCounter++;
+
+
+            if (numberList > 2) { //Split in half th
+                leftSide = numberList.slice(0, midPoint, numberList);
+                rightSide = numberList.slice(midPoint, numberList.length, numberList);
+
+                mergeSort(left);
+                mergeSort(right);
+
+            }else if(numberList[0] > numberList[1]){
+                //Put values in order
+                tempVal = numberList[0];
+
+                numberList[0] = numberList[1];
+                numberList[1] = tempVal;
+
+                return numberList;
+            }else{
+                return numberList;
+            }
+
+
+
+        }
+
+
+
+
+</script>
+</body>
+</html>

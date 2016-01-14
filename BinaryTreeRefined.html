@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+  <script>
+
+      var counter=0;
+
+      function Tree(rN) {
+          var rootNode;
+          var leftNode;
+          var rightNode;
+
+          this.rootNode = rN;
+      };
+
+
+      Tree.prototype.addNode=
+          function(nodeAdd){ //Determine whether value is left node or right node
+              if (nodeAdd <= this.rootNode) { //Add Left Node
+                  if (this.leftNode == null) { //If left node is empty then assign value
+                      SubTree = new Tree(nodeAdd);
+                      this.leftNode=SubTree
+                  }else{  //If left node is tree then call recursive add
+                      SubTree = new Tree();
+                      SubTree = this.leftNode;
+                      SubTree.addNode(nodeAdd); //Recursive call to add node
+                  }
+              }else{ //Add Right Node
+                  if (this.rightNode == null) { //If right node is empty then assign value
+                      SubTree = new Tree(nodeAdd);
+                      this.rightNode=SubTree
+                  }else{  //If right node is tree then traverse that tree
+                      SubTree = new Tree();
+                      SubTree = this.rightNode;
+                      SubTree.addNode(nodeAdd); //Recursive call to add node
+                  }
+              }
+
+          }
+
+      Tree.prototype.depthFirst=
+          function(findVal) {
+              //Traverse tree depth ways and return array of boolean and count
+
+              counter=1;
+              var returnVal;
+              var SubTree = new Tree();
+              var SubTree2 = new Tree();
+              var stack=[]; //Create array for stack
+
+              stack.push(this);
+
+              console.log('Depth Search');
+
+              while(stack.length>0){
+                SubTree=stack.pop();
+
+                console.log(SubTree.rootNode);
+
+                if(SubTree.rootNode==findVal){
+                   returnVal='Depth Search - Found a match for ' + findVal + ' in ' + counter + ' steps';
+                   return returnVal;
+                }
+
+               if(SubTree.rightNode!=null){
+                   SubTree2=SubTree.rightNode;
+                   stack.push(SubTree2);
+                }
+
+                if(SubTree.leftNode!=null){
+                      SubTree2=SubTree.leftNode;
+                      stack.push(SubTree2);
+                }
+
+                counter++;
+              }
+
+              returnVal='Depth Search - No match for ' + findVal + ' in ' + counter + ' steps';
+              return returnVal;
+
+              //Recursive pattern doesn't work correctly with returns
+              /*
+              if (this.rootNode == findVal) {
+                  returnVal='Depth Search - Found a match for ' + findVal + ' in ' + counter + ' steps';
+                  return returnVal;
+              }else if(this.leftNode==null && this.rightNode==null){//If reached bottom of the tree then no match
+                  returnVal='Depth Search - No match for ' + findVal + ' in ' + counter + ' steps';
+                  return returnVal;
+              }else{
+                  if(this.leftNode!=null){
+                    SubTree=this.leftNode;
+                    SubTree.depthFirst(findVal);
+                  }
+
+                  if(this.rightNode!=null){
+                      SubTree=this.rightNode;
+                      SubTree.depthFirst(findVal);
+                  }
+              }
+              */
+          }
+
+      Tree.prototype.breadthFirst=
+          function(findVal) {
+              //Traverse tree breadth ways and return array of boolean and count
+
+              counter=1;
+              var returnVal;
+              var SubTree = new Tree();
+              var queue = [] ;
+
+              SubTree=this;
+              queue.push(this); //Populate queue with Root Tree node
+
+              console.log('Breadth Search');
+
+              while(queue.length>0){
+
+                  SubTree=queue.shift(); //Shift is inefficient in array based queue
+
+                  console.log(SubTree.rootNode); //Print tree iteration path to console
+
+                  if(SubTree.rootNode==findVal){ //If there is match then exit
+                      returnVal='Breadth Search - Found a match for ' + findVal + ' in ' + counter + ' steps';
+                      return returnVal;
+                  }
+
+                  if(SubTree.leftNode!=null){
+                      queue.push(SubTree.leftNode);
+                  }
+
+                  if(SubTree.rootNode==2){
+                      SubTree2 = new Tree()
+                      SubTree2=SubTree.rightNode;
+                  }
+
+                  if(SubTree.rightNode!=null){
+                      queue.push(SubTree.rightNode);
+                  }
+
+                  counter++;
+
+              }
+
+              //If reached bottom of the tree then no match
+              returnVal='Breadth Search - No match for ' + findVal + ' in ' + counter + ' steps';
+              return returnVal;
+
+
+         }
+
+
+
+      Tree.prototype.printTree=
+          function() {
+              document.writeln('Global Root' + this.rootNode + '<br>');
+
+              if (typeof this.leftNode == 'object') { //If branch is a tree then create new object and print tree
+                  SubTree = new Tree();
+                  SubTree=this.leftNode;
+                  document.writeln('SubTree Root' + SubTree.rootNode+'<br>'); //Print subtree node
+              }else if (this.leftNode !=null) {
+                  document.writeln(this.leftNode + '<br>');
+              }
+
+              if (typeof this.rightNode == 'object') { //If branch is a tree then create new object and print tree
+                  SubTree2 = new Tree();
+                  SubTree2=this.rightNode;
+                  document.writeln('SubTree2 Root' + SubTree2.rootNode+'<br>'); //Print subtree node
+
+              }else if(this.rightNode !=null) {
+                  document.writeln(this.rightNode + '<br>');
+              }
+
+              //Recursive call is last so that tree is traversed correctly when printing
+              if(typeof this.leftNode == 'object') {
+                  SubTree.printTree(); //Recursive call to print sub nodes
+              }
+
+              if(typeof this.rightNode == 'object') {
+                  SubTree2.printTree(); //Recursive call to print sub nodes
+              }
+          }
+
+
+      Tree.prototype.bubbleSortTree=
+      function(){
+
+          //Traverse tree in optimum order then ie. left nodes are always less then root parent and right are always more
+          //Populate array.
+
+          //Depth first should be most efficient
+          var SubTree=new Tree();
+          var SubTree2=new Tree();
+
+          var stack=[];
+          stack.push(this);
+          var treeArray=[];
+
+          var swapFlag=false;;
+
+          counter=0
+
+          //Fill Array with Stack
+
+          while(stack.length>0){
+
+              SubTree=stack.pop(); //Take top element off the stack and add to array
+              treeArray[counter]=SubTree.rootNode;
+
+              if(SubTree.rightNode!=null){
+                  SubTree2=SubTree.rightNode;
+                  stack.push(SubTree2); //Add right node to subtree
+              }
+
+
+              if(SubTree.leftNode!=null){
+                  SubTree2=SubTree.leftNode;
+                  stack.push(SubTree2); //Add left node to subtree
+              }
+
+              counter++;
+          }
+
+          console.log('Filled array in ' + counter + ' steps');
+          counter=0;
+
+          var Current;
+          var Next;
+
+          while(swapFlag==true || counter==0){ //Loop through array until there are no swaps
+
+              swapFlag=false;
+
+              for(var i=0;i<treeArray.length-1;i++){ //Function looks at next element in array so loop to -1
+                  Current=treeArray[i];
+                  Next=treeArray[i+1];
+
+                  //console.log('Current-'+Current);
+                  //console.log('Next-'+Next);
+
+                  if(Current>Next){ //If current value is more than the previous swap and set swap flag
+                      treeArray[i]=Next;
+                      treeArray[i+1]=Current;
+                      swapFlag=true;
+                      console.log('Swap has occured');
+                  }
+              }
+
+             counter++;
+             //console.log(counter);
+
+          }
+
+          console.log('Array was looped through ' + counter + ' times');
+
+          SubTree=new Tree(treeArray[treeArray.length-1]); //Create new tree with root
+          var max=treeArray.length;
+          max-=2
+
+
+          //Populate new tree starting from (second) highest value to lowest
+          for(var i=max;i>=0;i--){
+             SubTree.addNode(treeArray[i]);
+          }
+
+          return SubTree;
+      }
+
+      BinaryTree = new Tree(750);
+
+      //Fill Array to search
+      for(var i=0;i<1001;i++){
+          BinaryTree.addNode(i);
+      }
+
+
+     /*
+      BinaryTree = new Tree(20);
+      BinaryTree.addNode(10);
+      BinaryTree.addNode(30);
+      BinaryTree.addNode(2);
+      BinaryTree.addNode(5);
+      BinaryTree.addNode(6);
+      BinaryTree.addNode(31);
+      BinaryTree.addNode(40);
+      */
+      //BinaryTree.printTree();
+
+
+
+     //BinaryTree=BinaryTree.bubbleSortTree();
+
+
+     var findVal=prompt('Enter value to search for');
+     //var findVal=20;
+
+     var returnVal=BinaryTree.depthFirst(findVal);
+     console.log(returnVal);
+
+     var returnVal=BinaryTree.breadthFirst(findVal);
+     console.log(returnVal);
+
+    </script>
+</body>
+</html>

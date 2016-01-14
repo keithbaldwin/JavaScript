@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+  <script>
+
+      var stack=[];
+
+      for(var i=0;i<9;i++){
+        stack.push(i);
+      }
+
+      stack=reverseStack(stack);
+      printStack(stack);
+
+      stack=Remove(stack,'evens');
+      //stack=Remove(stack,'odds');
+
+      printStack(stack);
+
+      function reverseStack(stack_in){
+          var returnStack= [];
+          var counter=0;
+
+          while(stack_in.length>0){
+              returnStack[counter]=stack_in.pop();
+
+              counter++;
+          }
+
+          return returnStack;
+      }
+
+      function Remove(stack_in,type){
+          var Max=stack_in.length-1;
+          var counter=0;
+          var currentVal;
+          var stackArray = [];
+
+          console.log(''); //Add line space
+          console.log('Removing ' + type);
+
+          while(stack_in.length>0){
+
+             currentVal=stack_in.pop();
+
+              if(type=='evens'){ //Remove even number
+                if(currentVal%2!=0) {
+                    stackArray[counter] = currentVal;
+                    counter++;
+                }
+              }else{ //Remove odd Number
+                    if(currentVal%2==0) {
+                        stackArray[counter] = currentVal;
+                        counter++;
+                    }
+              }
+
+
+          }
+
+          for(var i=stackArray.length-1;i>=0;i--){ //Stack order has been reversed so order needs to be changed
+              stack_in.push(stackArray[i]); //Add item to stack
+          }
+
+          return stack_in;
+      }
+
+      function printStack(stack_in){
+
+          for(var i=0;i<stack_in.length;i++){
+              console.log(stack_in[i]);
+          }
+      }
+
+  </script>
+</body>
+</html>

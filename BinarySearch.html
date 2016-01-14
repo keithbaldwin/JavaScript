@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+  <script>
+      var values=[];
+      var searchVal;
+      var counter=0;
+
+      //searchVal=window.prompt();
+      searchVal=22;
+
+      //Fill Array to search
+      for(var i=0;i<10000001;i++){
+           values[i]=i*2;
+      }
+
+      console.log('Array Size ' + values.length);
+
+      binarySearch(values,searchVal);
+
+      function binarySearch(searchArray,searchValIn){
+          var midPoint;
+          midPoint=parseInt(searchArray.length/2);
+          counter++;
+
+          console.log(searchArray[midPoint]);
+
+          if(searchArray[midPoint]==searchValIn){
+             console.log('Bubble Search found for ' + searchValIn + ' in ' + counter + ' steps');
+          }else if(midPoint==0 ||midPoint==searchArray.length-1){
+              console.log('Bubble Search, No matching results for ' + searchValIn + ' in ' + counter + ' steps');
+          }else if(searchValIn<searchArray[midPoint]){
+              //Look in left side of array if search value is lower than current value
+              searchArray=searchArray.slice(0,midPoint,searchArray);
+
+              binarySearch(searchArray,searchValIn); //Recursive call to search
+          }else if(searchValIn>searchArray[midPoint]) {
+              //Look in right side of array if search value is lower than current value
+              searchArray = searchArray.slice(midPoint, searchArray.length, searchArray);
+
+              binarySearch(searchArray, searchValIn); //Recursive call to search
+          }
+      }
+
+
+  </script>
+
+</body>
+</html>

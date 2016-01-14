@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Price List Add</title>
+</head>
+<body>
+  <script>
+        //Sum the prices for each of the ProductIDs
+
+        var InventoryObject={}; // Declare Object for storing values
+        var Pricing=[[100,10],[200,11],[100,19],[200,12],[300,1]];
+
+        for(var i=0;i<Pricing.length;i++){
+            var elementArray=Pricing[i];
+            var Key='k' + elementArray[0,0] ; //Convert first element to object key
+            var currentValue;
+
+
+            //If Key Already exists in inventory object then add value
+            if (Key in InventoryObject) {
+                //document.write(Inventory['k100']);
+                currentValue=InventoryObject[Key]; //Get current total
+
+                InventoryObject[Key]=currentValue+elementArray[0,1];
+            }else{ //If not then add new key in object
+                InventoryObject[Key]=elementArray[0,1];
+            }
+        }
+
+        for (Key in InventoryObject) {
+            var KeyText=Key.substring(1)
+            document.writeln('PriceID -' + KeyText + ',  Quantity - ' + InventoryObject[Key] + '<br>');
+        }
+
+  </script>
+</body>
+</html>
